@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"smartdeskpostureassistant","appId":"1:590963100560:android:667098e603eee7289d4115","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"smartdeskpostureassistant","configurations":{"android":"1:590963100560:android:667098e603eee7289d4115","ios":"1:590963100560:ios:3a01b2675cfaf54f9d4115","macos":"1:590963100560:ios:3a01b2675cfaf54f9d4115","web":"1:590963100560:web:b05ba78d9eb88c009d4115","windows":"1:590963100560:web:3863cb002c3194659d4115"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "smartdeskpostureassistant",
+          "appId": "1:590963100560:android:667098e603eee7289d4115",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "smartdeskpostureassistant",
+          "configurations": {
+            "android": "1:590963100560:android:667098e603eee7289d4115",
+            "ios": "1:590963100560:ios:3a01b2675cfaf54f9d4115",
+            "macos": "1:590963100560:ios:3a01b2675cfaf54f9d4115",
+            "web": "1:590963100560:web:b05ba78d9eb88c009d4115",
+            "windows": "1:590963100560:web:3863cb002c3194659d4115"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ]
+}

@@ -1,10 +1,19 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:postura/core/auth/auth_providers.dart';
 import 'package:postura/core/models/posture_state.dart';
 
 final postureStateProvider = StreamProvider<PostureState>((ref) {
+  final user = ref.watch(authStateProvider).value;
+
+  if (user == null) {
+    return const Stream.empty();
+  }
+
+  final userId = user.uid;
+
   final postureStream = FirebaseDatabase.instance
-      .ref('devices/pi_desk_001/current_state')
+      .ref('users/$userId/devices/pi_desk_001/current_state')
       .onValue
       .map((event) {
         final map =
