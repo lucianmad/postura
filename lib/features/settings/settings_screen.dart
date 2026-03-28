@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:postura/core/auth/auth_providers.dart';
 
-class LoginScreen extends ConsumerWidget {
-  const LoginScreen({super.key});
+class SettingsScreen extends ConsumerWidget {
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -12,17 +12,17 @@ class LoginScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Login screen'),
+            Text('Settings page'),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await ref.read(authServiceProvider).signInWithGoogle();
+                  await ref.read(authServiceProvider).signOut();
                 } catch (ex) {
                   print(ex.toString());
                 }
               },
-              child: Text('Log in with Google'),
+              child: Text('Log out'),
             ),
           ],
         ),

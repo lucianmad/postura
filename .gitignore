@@ -54,3 +54,4 @@ app.*.map.json
 .env
 
 functions/node_modules
+firepit-log.txt
