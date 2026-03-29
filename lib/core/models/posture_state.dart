@@ -7,4 +7,8 @@ class PostureState {
   factory PostureState.fromMap(Map<String, dynamic> map) {
     return PostureState(status: map['status'], timestamp: map['timestamp']);
   }
+
+  factory PostureState.empty() {
+    return PostureState(status: 'SEARCHING', timestamp: 0);
+  }
 }
