@@ -13,8 +13,10 @@ class CalibrationScreen extends ConsumerStatefulWidget {
 }
 
 class _CalibrationScreenState extends ConsumerState<CalibrationScreen> {
+  String? _cachedUid;
+
   void _setStreaming(bool value) {
-    final uid = ref.read(authStateProvider).value?.uid;
+    final uid = _cachedUid;
     if (uid == null) return;
     FirebaseDatabase.instance
         .ref('users/$uid/devices/pi_desk_001/commands/stream_telemetry')
@@ -24,6 +26,7 @@ class _CalibrationScreenState extends ConsumerState<CalibrationScreen> {
   @override
   void initState() {
     super.initState();
+    _cachedUid = ref.read(authStateProvider).value?.uid;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _setStreaming(true);
     });

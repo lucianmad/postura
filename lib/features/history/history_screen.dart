@@ -14,12 +14,21 @@ class HistoryScreen extends ConsumerStatefulWidget {
 class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedMonth = DateTime.now();
+  Map<DateTime, List<bool>> _cachedMonthData = {};
 
   @override
   Widget build(BuildContext context) {
     final dateStr = DateFormat('yyyy-MM-dd').format(_selectedDay);
     final sessionAsync = ref.watch(sessionLogProvider(dateStr));
+
+    ref.listen(monthSessionsProvider(_focusedMonth), (previous, next) {
+      next.whenData((data) {
+        setState(() {
+          _cachedMonthData = data;
+        });
+      });
+    });
 
     return Scaffold(
       body: Column(
@@ -30,17 +39,41 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
             lastDay: DateTime(2027, 12, 31),
             focusedDay: _focusedDay,
             selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+            headerStyle: HeaderStyle(formatButtonVisible: false),
+            calendarStyle: CalendarStyle(
+              outsideDaysVisible: false,
+              defaultTextStyle: TextStyle(color: Colors.white),
+              weekendTextStyle: TextStyle(color: Colors.white),
+            ),
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(color: Colors.white),
+              weekendStyle: TextStyle(color: Colors.white),
+            ),
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
                 _focusedDay = focusedDay;
+                _focusedMonth = focusedDay;
               });
             },
-            calendarFormat: _calendarFormat,
-            onFormatChanged: (format) {
+            onPageChanged: (focusedDay) {
               setState(() {
-                _calendarFormat = format;
+                _focusedDay = focusedDay;
+                _focusedMonth = focusedDay;
+                _cachedMonthData = {};
               });
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                final existingData = ref.read(
+                  monthSessionsProvider(focusedDay),
+                );
+                existingData.whenData((data) {
+                  setState(() => _cachedMonthData = data);
+                });
+              });
+            },
+            eventLoader: (day) {
+              return _cachedMonthData[DateTime(day.year, day.month, day.day)] ??
+                  [];
             },
           ),
           Expanded(

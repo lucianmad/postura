@@ -29,6 +29,7 @@ class MyHomePage extends ConsumerWidget {
                   child: Center(
                     child: Text(
                       state.status,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,

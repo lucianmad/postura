@@ -40,4 +40,7 @@ class StreamTelemetry {
       other is StreamTelemetry &&
       other.nose.x == nose.x &&
       other.nose.y == nose.y;
+
+  @override
+  int get hashCode => nose.x.hashCode ^ nose.y.hashCode;
 }
