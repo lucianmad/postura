@@ -30,6 +30,9 @@ exports.sendPostureNotification = onValueWritten(
         notification: {
             title: 'Postura — Posture Alert',
             body: `Bad posture detected: ${status}`
+        },
+        data: {
+          postureType: status
         }
     });
 
