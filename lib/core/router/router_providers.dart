@@ -1,18 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:postura/core/auth/auth_providers.dart';
+import 'package:postura/core/router/navigation_key.dart';
 import 'package:postura/core/router/router.dart';
 import 'package:postura/features/calibration/calibration_screen.dart';
+import 'package:postura/features/exercise/exercise_screen.dart';
 import 'package:postura/features/history/history_screen.dart';
 import 'package:postura/features/home/home_screen.dart';
 import 'package:postura/features/login/login_screen.dart';
 import 'package:postura/features/settings/settings_screen.dart';
 import 'package:postura/features/shell/shell_screen.dart';
 
-final routerProvider = Provider<GoRouter>((ref) {
+final routerProvider = Provider.family<GoRouter, String?>((
+  ref,
+  initialLocation,
+) {
   final notifier = RouterNotifier(ref);
 
   return GoRouter(
+    navigatorKey: navigatorKey,
+    initialLocation: initialLocation ?? '/',
     refreshListenable: notifier,
     redirect: (context, state) {
       final authState = ref.read(authStateProvider);
@@ -44,6 +51,13 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const SettingsScreen(),
           ),
         ],
+      ),
+      GoRoute(
+        path: '/exercises/:postureType',
+        builder: (context, state) {
+          final postureType = state.pathParameters['postureType']!;
+          return ExerciseScreen(postureType: postureType);
+        },
       ),
     ],
   );

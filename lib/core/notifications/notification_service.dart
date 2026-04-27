@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:go_router/go_router.dart';
+import 'package:postura/core/router/navigation_key.dart';
 
 class NotificationService {
   NotificationService();
@@ -21,5 +23,20 @@ class NotificationService {
         'fcmToken': newToken,
       }, SetOptions(merge: true));
     });
+
+    FirebaseMessaging.onMessage.listen((message) {
+      _handleMessage(message);
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      _handleMessage(message);
+    });
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    final postureType = message.data['postureType'];
+    if (postureType != null) {
+      navigatorKey.currentContext?.go('/exercises/$postureType');
+    }
   }
 }
