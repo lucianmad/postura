@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:postura/core/models/posture_status_enum.dart';
 
 class SessionLog {
   final String status;
   final int duration;
   final DateTime timestamp;
 
-  SessionLog({
+  const SessionLog({
     required this.status,
     required this.duration,
     required this.timestamp,
@@ -20,4 +21,6 @@ class SessionLog {
           : DateTime.now(),
     );
   }
+
+  PostureStatus get postureStatus => PostureStatus.fromString(status);
 }

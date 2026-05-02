@@ -7,7 +7,7 @@ class StreamTelemetry {
   final Landmark leftShoulder;
   final Landmark rightShoulder;
 
-  StreamTelemetry({
+  const StreamTelemetry({
     required this.nose,
     required this.leftEar,
     required this.rightEar,
@@ -26,7 +26,7 @@ class StreamTelemetry {
   }
 
   factory StreamTelemetry.empty() {
-    return StreamTelemetry(
+    return const StreamTelemetry(
       nose: Landmark(x: 0, y: 0),
       leftEar: Landmark(x: 0, y: 0),
       rightEar: Landmark(x: 0, y: 0),

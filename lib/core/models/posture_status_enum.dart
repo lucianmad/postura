@@ -13,9 +13,9 @@ enum PostureStatus {
   idle(Colors.grey, 'Idle'),
   unknown(Colors.black, 'Unknown');
 
-  const PostureStatus(this.color, this.status);
+  const PostureStatus(this.color, this.displayName);
   final Color color;
-  final String status;
+  final String displayName;
 
   static PostureStatus fromString(String rawStatus) {
     return _statusMap[rawStatus.trim()] ?? unknown;
@@ -33,4 +33,26 @@ enum PostureStatus {
     'SEARCHING': searching,
     'IDLE': idle,
   };
+
+  PostureCategory get category {
+    switch (this) {
+      case PostureStatus.ok:
+        return PostureCategory.good;
+      case PostureStatus.fhp:
+      case PostureStatus.slouching:
+      case PostureStatus.asymmetricShoulders:
+      case PostureStatus.headTilted:
+        return PostureCategory.bad;
+      case PostureStatus.headTurned:
+      case PostureStatus.lookingDown:
+        return PostureCategory.informational;
+      case PostureStatus.uncalibrated:
+      case PostureStatus.searching:
+      case PostureStatus.idle:
+      case PostureStatus.unknown:
+        return PostureCategory.neutral;
+    }
+  }
 }
+
+enum PostureCategory { good, bad, informational, neutral }

@@ -5,7 +5,7 @@ import 'package:postura/core/models/stream_telemetry.dart';
 class SkeletonPainter extends CustomPainter {
   final StreamTelemetry telemetry;
 
-  SkeletonPainter({required this.telemetry});
+  const SkeletonPainter({required this.telemetry});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -45,7 +45,7 @@ class SkeletonPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return (oldDelegate as SkeletonPainter).telemetry != telemetry;
+  bool shouldRepaint(covariant SkeletonPainter oldDelegate) {
+    return oldDelegate.telemetry != telemetry;
   }
 }

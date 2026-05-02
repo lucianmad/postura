@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:postura/core/models/posture_status_enum.dart';
 import 'package:postura/features/history/history_providers.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -88,7 +89,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   (sum, s) => sum + s.duration,
                 );
                 final goodDuration = sessions
-                    .where((s) => s.status == 'Posture OK')
+                    .where(
+                      (s) => s.postureStatus.category == PostureCategory.good,
+                    )
                     .fold(0, (sum, s) => sum + s.duration);
                 final goodPercentage = totalDuration > 0
                     ? (goodDuration / totalDuration * 100).round()
