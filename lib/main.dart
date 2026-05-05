@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:postura/core/router/router_providers.dart';
+import 'package:postura/core/theme/app_theme.dart';
 import 'package:postura/firebase_options.dart';
 
 void main() async {
@@ -33,7 +34,7 @@ class MyApp extends ConsumerWidget {
       title: 'Postura',
       debugShowCheckedModeBanner: false,
       routerConfig: ref.watch(routerProvider(initialLocation)),
-      theme: ThemeData.dark(),
+      theme: AppTheme.darkTheme,
     );
   }
 }
