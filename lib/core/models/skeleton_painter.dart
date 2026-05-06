@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:postura/core/models/point.dart';
 import 'package:postura/core/models/stream_telemetry.dart';
+import 'package:postura/core/theme/app_theme.dart';
 
 class SkeletonPainter extends CustomPainter {
   final StreamTelemetry telemetry;
@@ -10,12 +11,12 @@ class SkeletonPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final linePaint = Paint()
-      ..color = Colors.green
+      ..color = AppColors.good
       ..strokeWidth = 4.0
       ..strokeCap = StrokeCap.round;
 
     final dotPaint = Paint()
-      ..color = Colors.red
+      ..color = AppColors.accent
       ..style = PaintingStyle.fill;
 
     Offset toOffset(Landmark lm) {
@@ -37,10 +38,17 @@ class SkeletonPainter extends CustomPainter {
     canvas.drawLine(leftShoulder, rightShoulder, linePaint);
     canvas.drawLine(nose, midShoulder, linePaint);
 
-    final points = [nose, leftEar, rightEar, leftShoulder, rightShoulder];
+    final points = [
+      nose,
+      leftEar,
+      rightEar,
+      leftShoulder,
+      rightShoulder,
+      midShoulder,
+    ];
 
     for (final point in points) {
-      canvas.drawCircle(point, 6.0, dotPaint);
+      canvas.drawCircle(point, 8.0, dotPaint);
     }
   }
 

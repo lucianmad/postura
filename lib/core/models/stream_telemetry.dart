@@ -43,4 +43,7 @@ class StreamTelemetry {
 
   @override
   int get hashCode => nose.x.hashCode ^ nose.y.hashCode;
+
+  bool get isEmpty =>
+      nose.x == 0 && nose.y == 0 && leftShoulder.x == 0 && leftShoulder.y == 0;
 }

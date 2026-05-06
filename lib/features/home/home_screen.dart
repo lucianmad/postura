@@ -44,7 +44,7 @@ class MyHomePage extends ConsumerWidget {
                 data: (state) {
                   final postureState = PostureStatus.fromString(state.status);
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Center(
                         child: AnimatedContainer(
@@ -66,7 +66,7 @@ class MyHomePage extends ConsumerWidget {
                           ),
                           child: Center(
                             child: Text(
-                              state.status,
+                              postureState.displayName,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
@@ -77,7 +77,7 @@ class MyHomePage extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

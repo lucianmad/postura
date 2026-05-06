@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:postura/core/theme/app_theme.dart';
 
 enum PostureStatus {
-  ok(Colors.green, 'Posture OK'),
-  fhp(Colors.red, 'FHP'),
-  slouching(Colors.red, 'Slouching'),
-  asymmetricShoulders(Colors.red, 'Asymmetric Shoulders'),
-  headTilted(Colors.red, 'Head Tilted'),
-  headTurned(Colors.yellow, 'Head Turned'),
-  lookingDown(Colors.yellow, 'Looking Down'),
-  uncalibrated(Colors.grey, 'Uncalibrated'),
-  searching(Colors.grey, 'Searching'),
-  idle(Colors.grey, 'Idle'),
-  unknown(Colors.black, 'Unknown');
+  ok(AppColors.good, 'Posture OK'),
+  fhp(AppColors.bad, 'FHP'),
+  slouching(AppColors.bad, 'Slouching'),
+  asymmetricShoulders(AppColors.bad, 'Asymmetric Shoulders'),
+  headTilted(AppColors.bad, 'Head Tilted'),
+  headTurned(AppColors.info, 'Head Turned'),
+  lookingDown(AppColors.info, 'Looking Down'),
+  uncalibrated(AppColors.neutral, 'Uncalibrated'),
+  searching(AppColors.neutral, 'Searching'),
+  idle(AppColors.neutral, 'Idle'),
+  unknown(AppColors.background, 'Unknown');
 
   const PostureStatus(this.color, this.displayName);
   final Color color;
   final String displayName;
 
   static PostureStatus fromString(String rawStatus) {
-    return _statusMap[rawStatus.trim()] ?? unknown;
+    final trimmed = rawStatus.trim();
+    final fromMap = _statusMap[trimmed];
+    if (fromMap != null) return fromMap;
+
+    final result = PostureStatus.values.firstWhere(
+      (s) => s.name.toLowerCase() == trimmed.toLowerCase(),
+      orElse: () => unknown,
+    );
+    return result;
   }
 
   static const _statusMap = {
