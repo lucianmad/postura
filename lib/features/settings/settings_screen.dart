@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:postura/core/auth/auth_providers.dart';
+import 'package:postura/core/providers/device_providers.dart';
 import 'package:postura/core/theme/app_theme.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -57,7 +58,7 @@ class SettingsScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              user?.displayName ?? 'User',
+                              user?.displayName ?? user?.email ?? 'User',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -80,7 +81,7 @@ class SettingsScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
               Text(
-                'Device',
+                'DEVICE',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
@@ -89,15 +90,24 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _SettingsRow(
-                    icon: Icons.devices,
-                    label: 'Connected Device',
-                    value: 'pi_desk_001',
-                  ),
-                ),
+              Consumer(
+                builder: (context, ref, _) {
+                  final deviceIdAsync = ref.watch(deviceIdProvider);
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: _SettingsRow(
+                        icon: Icons.devices,
+                        label: 'Connected Device',
+                        value: deviceIdAsync.when(
+                          data: (id) => id ?? 'None',
+                          loading: () => '...',
+                          error: (_, _) => 'Error',
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 24),
               Text(

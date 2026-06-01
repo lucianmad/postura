@@ -106,7 +106,7 @@ class MyHomePage extends ConsumerWidget {
                     ],
                   );
                 },
-                loading: () => CircularProgressIndicator(),
+                loading: () => Center(child: CircularProgressIndicator()),
                 error: (err, stack) => Text(err.toString()),
               ),
               const SizedBox(height: 32),
@@ -232,7 +232,7 @@ class MyHomePage extends ConsumerWidget {
                     ),
                   );
                 },
-                loading: () => CircularProgressIndicator(),
+                loading: () => Center(child: CircularProgressIndicator()),
                 error: (err, stk) => Text(err.toString()),
               ),
             ],

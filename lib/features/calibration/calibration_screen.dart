@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:postura/core/auth/auth_providers.dart';
 import 'package:postura/core/models/posture_status_enum.dart';
 import 'package:postura/core/models/skeleton_painter.dart';
+import 'package:postura/core/providers/device_providers.dart';
 import 'package:postura/core/theme/app_theme.dart';
 import 'package:postura/features/calibration/calibration_providers.dart';
 import 'package:postura/features/home/home_providers.dart';
@@ -16,15 +17,17 @@ class CalibrationScreen extends ConsumerStatefulWidget {
 }
 
 class _CalibrationScreenState extends ConsumerState<CalibrationScreen> {
-  String? _cachedUid;
   bool _isCalibrating = false;
   bool _calibrationSuccess = false;
+  String? _cachedUid;
+  String? _cachedDeviceId;
 
   void _setStreaming(bool value) {
     final uid = _cachedUid;
-    if (uid == null) return;
+    final deviceId = _cachedDeviceId;
+    if (uid == null || deviceId == null) return;
     FirebaseDatabase.instance
-        .ref('users/$uid/devices/pi_desk_001/commands/stream_telemetry')
+        .ref('users/$uid/devices/$deviceId/commands/stream_telemetry')
         .set(value);
   }
 
@@ -32,7 +35,9 @@ class _CalibrationScreenState extends ConsumerState<CalibrationScreen> {
   void initState() {
     super.initState();
     _cachedUid = ref.read(authStateProvider).value?.uid;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    ref.read(deviceIdProvider.future).then((id) {
+      if (!mounted) return;
+      _cachedDeviceId = id;
       _setStreaming(true);
     });
   }
@@ -45,23 +50,20 @@ class _CalibrationScreenState extends ConsumerState<CalibrationScreen> {
 
   Future<void> _calibrate() async {
     final uid = _cachedUid;
-    if (uid == null) return;
+    final deviceId = _cachedDeviceId;
+    if (uid == null || deviceId == null) return;
 
-    setState(() {
-      _isCalibrating = true;
-    });
+    setState(() => _isCalibrating = true);
 
     try {
-      await FirebaseDatabase.instance
-          .ref('users/$uid/devices/pi_desk_001/commands/calibrate')
-          .set(true);
-
-      final ref = FirebaseDatabase.instance.ref(
-        'users/$uid/devices/pi_desk_001/commands/calibrate',
+      final calibrationRef = FirebaseDatabase.instance.ref(
+        'users/$uid/devices/$deviceId/commands/calibrate',
       );
 
+      await calibrationRef.set(true);
+
       bool confirmed = false;
-      await for (final event in ref.onValue.timeout(
+      await for (final event in calibrationRef.onValue.timeout(
         const Duration(seconds: 5),
         onTimeout: (sink) => sink.close(),
       )) {
