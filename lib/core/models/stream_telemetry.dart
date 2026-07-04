@@ -39,10 +39,29 @@ class StreamTelemetry {
   bool operator ==(Object other) =>
       other is StreamTelemetry &&
       other.nose.x == nose.x &&
-      other.nose.y == nose.y;
+      other.nose.y == nose.y &&
+      other.leftEar.x == leftEar.x &&
+      other.leftEar.y == leftEar.y &&
+      other.rightEar.x == rightEar.x &&
+      other.rightEar.y == rightEar.y &&
+      other.leftShoulder.x == leftShoulder.x &&
+      other.leftShoulder.y == leftShoulder.y &&
+      other.rightShoulder.x == rightShoulder.x &&
+      other.rightShoulder.y == rightShoulder.y;
 
   @override
-  int get hashCode => nose.x.hashCode ^ nose.y.hashCode;
+  int get hashCode => Object.hash(
+    nose.x,
+    nose.y,
+    leftEar.x,
+    leftEar.y,
+    rightEar.x,
+    rightEar.y,
+    leftShoulder.x,
+    leftShoulder.y,
+    rightShoulder.x,
+    rightShoulder.y,
+  );
 
   bool get isEmpty =>
       nose.x == 0 && nose.y == 0 && leftShoulder.x == 0 && leftShoulder.y == 0;
